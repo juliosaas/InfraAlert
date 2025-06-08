@@ -13,7 +13,7 @@ Este documento descreve os passos necessários para configurar e executar o proj
 
 ```
 InfraAlert/
-├── InfraAlert/        # Diretório do Front-end (React Native / Expo)
+├── frontend/        # Diretório do Front-end (React Native / Expo)
 │   ├── App.js
 │   ├── package.json
 │   ├── telas/
@@ -84,12 +84,13 @@ npx prisma migrate dev
 ```
 ---
 
+
 ## 📲 Configuração do Front-end
 
 Acesse o diretório do front-end:
 
 ```bash
-cd ../frontend
+cd frontend
 ```
 
 ### 📦 Instalar Dependências
@@ -105,22 +106,12 @@ npm install --legacy-peer-deps
 
 ### 🌐 Configurar a URL da API
 
-Nos arquivos `AdminScreen.js`, `Cadastro.js`, `Login.js`, altere a constante `API_URL` conforme seu ambiente:
+Edite o arquivo `frontend/config.js` e ajuste a constante `API_URL` conforme seu ambiente:
 
-- Simulador iOS (Mac):
-  ```js
-  const API_URL = 'http://localhost:3000/api';
-  ```
-
-- Emulador Android:
-  ```js
-  const API_URL = 'http://10.0.2.2:3000/api';
-  ```
-
-- Celular físico (via Expo Go):
-  ```js
-  const API_URL = 'http://SEU_IP_LOCAL:3000/api';
-  ```
+```js
+// frontend/config.js
+export const API_URL = 'http://SEU_IP_LOCAL:3000';
+```
 
 Use `ipconfig` (Windows) ou `ifconfig/ip addr` (Mac/Linux) para descobrir seu IP local.
 
@@ -157,12 +148,15 @@ cd backend
 npm run dev
 ```
 
+
 ### 2. Iniciar o Front-end
 
 Em um novo terminal:
 
 ```bash
-cd InfraAlert
+cd frontend
+npm start
+# ou
 npx expo start
 ```
 
