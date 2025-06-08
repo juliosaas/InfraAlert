@@ -1,0 +1,47 @@
+{
+  "expo": {
+    "name": "InfraAlert",
+    "slug": "infraalert",
+    "version": "1.0.0",
+    "platforms": [
+      "android",
+      "ios",
+      "web"
+    ],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "orientation": "portrait",
+    "icon": "./assets/img/InfraAlertLogo.png",
+    "splash": {
+      "image": "./assets/img/InfraAlertLogo.png",
+      "resizeMode": "contain"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.yourusername.infraalert", 
+      "config": {
+        "googleMapsApiKey": "AIzaSyDUDPsaGDen1k_-1-drjyUWq7207dmmGek" 
+      },
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Este app precisa de acesso à sua localização."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png", 
+        "backgroundColor": "#FFFFFF"
+      },
+      "package": "com.yourusername.infraalert", 
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyDUDPsaGDen1k_-1-drjyUWq7207dmmGek" 
+        }
+      },
+      "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION"]
+    },
+    "web": {
+      "favicon": "./assets/img/InfraAlertLogo.png"
+    }
+  }
+}
