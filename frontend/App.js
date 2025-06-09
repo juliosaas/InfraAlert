@@ -6,7 +6,8 @@ import Login from './telas/Login';
 import Cadastro from './telas/Cadastro';
 import Home from './telas/Home';
 import AdminScreen from './telas/AdminScreen';
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
+import { autoConfigureNetwork } from './scripts/autoConfigureNetwork';
 
 const Stack = createStackNavigator();
 
@@ -14,8 +15,27 @@ export const UserContext = createContext();
 
 export default function App() {
   const [user, setUser] = useState(null);
+  const [networkConfigured, setNetworkConfigured] = useState(false);
+
+  useEffect(() => {
+    // Configuração automática de rede quando o app inicia
+    const initializeNetwork = async () => {
+      try {
+        console.log('🚀 Inicializando configuração de rede...');
+        await autoConfigureNetwork();
+        setNetworkConfigured(true);
+        console.log('✅ Rede configurada com sucesso');
+      } catch (error) {
+        console.error('❌ Erro na configuração de rede:', error);
+        setNetworkConfigured(true); // Continua mesmo com erro
+      }
+    };
+
+    initializeNetwork();
+  }, []);
+
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser, networkConfigured }}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Loading">
           <Stack.Screen name="Loading" component={Loading} />

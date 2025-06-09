@@ -25,3 +25,12 @@ enum role {
   USER
   ADMIN
 }
+
+model RotaSegura {
+  id                   Int     @id @default(autoincrement())
+  nomeRua              String
+  horarioInicio        String  // ex: "20:00"
+  horarioFim           String  // ex: "05:00"
+  indicePericulosidade Float   // valor de 0.0 a 10.0
+}
+

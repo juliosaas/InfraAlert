@@ -35,13 +35,10 @@ app.use(logger);
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.listen(3000, async () => {
-  console.clear()
-  console.log("Servidor da API está rondando na porta http://localhost:3000\n")
-
+// Função para verificar/criar Super Admin
+async function checkSuperAdmin() {
   try {
-
-    if( !process.env.SUPERADMIN_EMAIL ) {
+    if (!process.env.SUPERADMIN_EMAIL) {
       console.error("Variável de ambiente SUPERADMIN_EMAIL não está definida.");
       process.exit(1);
     }
@@ -53,7 +50,6 @@ app.listen(3000, async () => {
     });
 
     if (!user) {
-
       if (!process.env.SUPERADMIN_PASSWORD) {
         console.error("Variáveis de ambiente SUPERADMIN_PASSWORD não estão definidas.");
         process.exit(1);
@@ -77,13 +73,29 @@ app.listen(3000, async () => {
     console.error("Erro ao verificar ou criar o usuário Super Admin:", error);
     process.exit(1);
   }
-
-})
+}
 
 
 app.get("/", ((req, res) => { return res.json({ message: "Seja bem vindo ao INFRAALERT" }) }))
 
-server.listen(PORT, () => {
+// Health check endpoint
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    status: "OK",
+    message: "InfraAlert API está funcionando",
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    environment: process.env.NODE_ENV || "development"
+  });
+});
+
+server.listen(PORT, async () => {
+  console.clear();
+  console.log(`Servidor da API está rodando na porta http://localhost:${PORT}\n`);
+  
+  // Verificar/criar Super Admin
+  await checkSuperAdmin();
+  
   logger.logger.info(`Server running at http://${HOST}:${PORT}`);
   logger.logger.info(`Swagger running at http://${HOST}:${PORT}/docs`);
 });
