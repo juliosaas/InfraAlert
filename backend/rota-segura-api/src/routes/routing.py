@@ -86,6 +86,68 @@ def calculate_route():
             'error': f'Erro interno do servidor: {str(e)}'
         }), 500
 
+@routing_bp.route('/test-route', methods=['POST'])
+def test_route():
+    """
+    Endpoint de teste com dados simulados
+    """
+    try:
+        data = request.get_json()
+        start_address = data.get('start_address', 'Origem Teste')
+        end_address = data.get('end_address', 'Destino Teste')
+        
+        print(f"🧪 Teste de rota simulada")
+        print(f"📍 Origem: {start_address}")
+        print(f"🎯 Destino: {end_address}")
+        
+        # Dados simulados para Campinas
+        mock_response = {
+            'route': {
+                'start_coords': [-22.9064, -47.0616],  # Campinas centro
+                'end_coords': [-22.9164, -47.0716],    # Próximo ao centro
+                'distance_meters': 1500,
+                'duration_seconds': 420,  # 7 minutos
+                'geometry': {
+                    'type': 'LineString',
+                    'coordinates': [
+                        [-47.0616, -22.9064],
+                        [-47.0666, -22.9114],
+                        [-47.0716, -22.9164]
+                    ]
+                },
+                'street_names': ['Rua Teste A', 'Rua Teste B', 'Rua Teste C']
+            },
+            'safety_analysis': {
+                'safety_level': 'MODERADA',
+                'risk_score': 6.5,
+                'database_coverage': 0.8,
+                'incident_count': 3,
+                'risk_factors': ['Tráfego intenso', 'Área comercial']
+            },
+            'ai_analysis': {
+                'final_score': 7.2,
+                'confidence': 0.85,
+                'quality': 'BOA'
+            },
+            'suggestions': ['Evite horários de pico', 'Mantenha atenção em cruzamentos'],
+            'recommendation': {
+                'type': 'WARNING',
+                'message': 'Rota com qualidade regular. (Score IA: 7.2/10)',
+                'suggestion': 'Mantenha atenção redobrada durante o trajeto.',
+                'ai_confidence': 'ALTA'
+            },
+            'timestamp': datetime.now().isoformat()
+        }
+        
+        print(f"✅ Retornando dados simulados")
+        return jsonify(mock_response), 200
+        
+    except Exception as e:
+        print(f"❌ Erro no teste: {e}")
+        return jsonify({
+            'error': f'Erro no teste: {str(e)}'
+        }), 500
+
 @routing_bp.route('/analyze-street', methods=['POST'])
 def analyze_street():
     """

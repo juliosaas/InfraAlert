@@ -15,13 +15,20 @@ class GeocodingService:
         Converte um endereço em coordenadas lat/lng
         """
         try:
+            print(f"🔍 Geocoding: {address}, {city}")
             full_address = f"{address}, {city}, Brasil"
-            location = self.geolocator.geocode(full_address, timeout=10)
+            print(f"📍 Endereço completo: {full_address}")
+            
+            location = self.geolocator.geocode(full_address, timeout=3)  # Reduzido de 5 para 3
             if location:
-                return (location.latitude, location.longitude)
-            return None
+                coords = (location.latitude, location.longitude)
+                print(f"✅ Geocoding sucesso: {coords}")
+                return coords
+            else:
+                print(f"❌ Geocoding falhou para: {full_address}")
+                return None
         except Exception as e:
-            print(f"Erro no geocoding: {e}")
+            print(f"❌ Erro no geocoding: {e}")
             return None
     
     def reverse_geocode(self, lat: float, lng: float) -> Optional[str]:
@@ -46,6 +53,10 @@ class RoutingService:
         Obtém rota usando OSRM (Open Source Routing Machine)
         """
         try:
+            print(f"🛣️ Calculando rota OSRM...")
+            print(f"📍 Start: {start_coords}")
+            print(f"🎯 End: {end_coords}")
+            
             start_lng, start_lat = start_coords[1], start_coords[0]
             end_lng, end_lat = end_coords[1], end_coords[0]
             
@@ -56,14 +67,25 @@ class RoutingService:
                 'steps': 'true'
             }
             
-            response = requests.get(url, params=params, timeout=30)
+            print(f"🌐 URL OSRM: {url}")
+            print(f"📤 Params: {params}")
+            
+            response = requests.get(url, params=params, timeout=8)  # Reduzido de 10 para 8
+            print(f"📥 Response status: {response.status_code}")
+            
             if response.status_code == 200:
                 data = response.json()
+                print(f"📊 OSRM response code: {data.get('code', 'N/A')}")
                 if data['code'] == 'Ok' and data['routes']:
+                    print(f"✅ Rota OSRM calculada com sucesso!")
                     return data['routes'][0]
+                else:
+                    print(f"❌ OSRM erro: {data}")
+            else:
+                print(f"❌ HTTP Error: {response.status_code}")
             return None
         except Exception as e:
-            print(f"Erro ao obter rota: {e}")
+            print(f"❌ Erro ao obter rota: {e}")
             return None
     
     def extract_street_names_from_route(self, route_data: Dict) -> List[str]:
@@ -83,22 +105,36 @@ class RoutingService:
         """
         Calcula rota completa entre dois endereços
         """
-        # Geocoding dos endereços
-        start_coords = self.geocoding.geocode_address(start_address)
-        end_coords = self.geocoding.geocode_address(end_address)
+        print(f"🚀 Iniciando cálculo de rota...")
+        print(f"📍 Origem: {start_address}")
+        print(f"🎯 Destino: {end_address}")
         
-        if not start_coords or not end_coords:
+        # Geocoding dos endereços
+        print(f"📍 Fase 1: Geocoding origem...")
+        start_coords = self.geocoding.geocode_address(start_address)
+        if not start_coords:
+            print(f"❌ Falha no geocoding da origem")
+            return None
+            
+        print(f"📍 Fase 2: Geocoding destino...")
+        end_coords = self.geocoding.geocode_address(end_address)
+        if not end_coords:
+            print(f"❌ Falha no geocoding do destino")
             return None
         
+        print(f"📍 Fase 3: Calculando rota...")
         # Obter rota
         route_data = self.get_route_osrm(start_coords, end_coords)
         if not route_data:
+            print(f"❌ Falha no cálculo da rota")
             return None
         
+        print(f"📍 Fase 4: Extraindo nomes das ruas...")
         # Extrair nomes das ruas
         street_names = self.extract_street_names_from_route(route_data)
+        print(f"🛣️ Ruas encontradas: {len(street_names)} ruas")
         
-        return {
+        result = {
             'start_coords': start_coords,
             'end_coords': end_coords,
             'route_data': route_data,
@@ -106,6 +142,9 @@ class RoutingService:
             'distance': route_data.get('distance', 0),
             'duration': route_data.get('duration', 0)
         }
+        
+        print("✅ Rota calculada com sucesso!")
+        return result
 
 class SafetyAnalyzer:
     def __init__(self, db_session):

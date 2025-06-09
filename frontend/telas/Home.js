@@ -61,19 +61,34 @@ export default function Home() {
 
   useEffect(() => {
     // Ajustar mapa quando rota for calculada
+    console.log('🗺️ Effect routeData triggered:', routeData);
     if (routeData && routeData.start_coords && routeData.end_coords) {
+      console.log('📍 Coordenadas encontradas:');
+      console.log('  Start:', routeData.start_coords);
+      console.log('  End:', routeData.end_coords);
+      console.log('  Geometry:', routeData.geometry);
+      
       const newRegion = calculateMapRegion(routeData.start_coords, routeData.end_coords);
+      console.log('🗺️ Nova região calculada:', newRegion);
+      
       if (newRegion) {
         setMapRegion(newRegion);
         if (mapRef.current) {
           mapRef.current.animateToRegion(newRegion, 1000);
         }
       }
+    } else {
+      console.log('❌ Dados de rota incompletos:', {
+        routeData: !!routeData,
+        start_coords: routeData?.start_coords,
+        end_coords: routeData?.end_coords
+      });
     }
   }, [routeData]);
 
   useEffect(() => {
     // Mostrar recomendação quando análise estiver disponível
+    console.log('🛡️ Effect safetyInfo triggered:', safetyInfo);
     if (safetyInfo && safetyInfo.recommendation) {
       showSafetyRecommendation(safetyInfo.recommendation, safetyInfo.suggestions);
     }

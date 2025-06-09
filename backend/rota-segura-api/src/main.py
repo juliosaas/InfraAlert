@@ -11,11 +11,22 @@ sys.path.insert(0, os.path.dirname(__file__))
 
 from flask import Flask, send_from_directory
 from flask_cors import CORS
-from src.models.rota_segura import RotaSegura
+from src.models.rota_segura import db, RotaSegura
 from src.routes.routing import routing_bp
 
 app = Flask(__name__, static_folder=os.path.join(os.path.dirname(__file__), 'static'))
 app.config['SECRET_KEY'] = 'asdf#FGSgvasgf$5$WGT'
+
+# Configuração do banco de dados
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///rota_segura.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# Inicializar SQLAlchemy com a aplicação
+db.init_app(app)
+
+# Criar tabelas se não existirem
+with app.app_context():
+    db.create_all()
 
 # Habilitar CORS para todas as rotas
 CORS(app)
