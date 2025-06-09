@@ -83,17 +83,25 @@ export const detectLocalIP = async () => {
  */
 export const testConnection = async (ip, port = 5000, timeout = 3000) => {
   try {
+    console.log(`🔍 Testando conexão: http://${ip}:${port}/health`);
+    
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), timeout);
 
     const response = await fetch(`http://${ip}:${port}/health`, {
       method: 'GET',
-      signal: controller.signal
+      signal: controller.signal,
+      cache: 'no-cache'
     });
 
     clearTimeout(timeoutId);
-    return response.ok;
+    
+    const success = response.ok;
+    console.log(`${success ? '✅' : '❌'} ${ip}:${port} - Status: ${response.status}`);
+    
+    return success;
   } catch (error) {
+    console.log(`❌ ${ip}:${port} - Erro: ${error.message}`);
     return false;
   }
 };
@@ -140,6 +148,35 @@ let cachedBackendIP = null;
 let ipDetectionPromise = null;
 
 export const getBackendIP = async () => {
+  // Para Android emulator, tenta diferentes IPs
+  if (Platform.OS === 'android') {
+    console.log('🔧 Detectando IP para Android emulator...');
+    
+    // Lista de IPs para testar no Android emulator
+    const androidIPs = [
+      '10.0.2.2',        // Padrão do emulador Android
+      '192.168.100.9',   // Seu IP atual
+      '192.168.1.1',     // IP comum de rede
+      '192.168.0.1',     // IP comum de rede
+      'localhost'        // Fallback
+    ];
+    
+    for (const ip of androidIPs) {
+      console.log(`🧪 Testando Android IP: ${ip}:5000`);
+      const isOnline = await testConnection(ip, 5000, 3000);
+      if (isOnline) {
+        console.log(`✅ Backend encontrado em: ${ip}:5000`);
+        cachedBackendIP = ip;
+        return ip;
+      }
+    }
+    
+    // Se nenhum IP funcionou, usa o padrão
+    console.log('⚠️ Nenhum IP respondeu. Usando 10.0.2.2 como fallback');
+    return '10.0.2.2';
+  }
+  
+  // Para outras plataformas, tenta detectar o melhor IP
   if (cachedBackendIP) {
     return cachedBackendIP;
   }

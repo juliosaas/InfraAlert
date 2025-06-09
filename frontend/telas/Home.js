@@ -95,9 +95,15 @@ export default function Home() {
   }, [safetyInfo]);
 
   const handleCalculateRoute = async () => {
+    console.log('🚀 [HOME] Iniciando cálculo de rota...');
+    console.log('📍 [HOME] Partida:', partida);
+    console.log('🎯 [HOME] Destino:', destino);
+    
     const success = await calculateRoute(partida, destino);
+    console.log('📊 [HOME] Resultado do cálculo:', success);
+    
     if (!success) {
-      // Erro já foi tratado pelo hook
+      console.log('❌ [HOME] Erro já tratado pelo hook');
       return;
     }
   };

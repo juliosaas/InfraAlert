@@ -5,16 +5,24 @@ import { getBackendIP, testConnection } from '../utils/networkUtils';
 
 // Função para obter a URL base da API dinamicamente
 const getAPIBaseURL = async () => {
+  console.log('🔍 Detectando IP do backend...');
   const ip = await getBackendIP();
   const baseURL = `http://${ip}:5000/api/routing`;
   
+  console.log(`🌐 IP detectado: ${ip}`);
+  console.log(`🌐 URL base: ${baseURL}`);
+  
   // Testa a conexão antes de retornar
-  const isOnline = await testConnection(ip, 5000);
+  console.log('🧪 Testando conexão com o backend...');
+  const isOnline = await testConnection(ip, 5000, 5000);
+  
   if (!isOnline) {
-    console.warn(`⚠️ Backend pode estar offline em ${ip}:5000`);
+    console.warn(`⚠️ Backend parece estar offline em ${ip}:5000`);
+    console.warn('⚠️ Tentando mesmo assim...');
+  } else {
+    console.log(`✅ Backend está online em ${ip}:5000`);
   }
   
-  console.log(`🌐 Usando API: ${baseURL} (${isOnline ? 'ONLINE' : 'OFFLINE'})`);
   return baseURL;
 };
 
@@ -26,7 +34,19 @@ class RouteService {
       console.log('🎯 Destino:', endAddress);
       
       const API_BASE_URL = await getAPIBaseURL();
-      console.log('🌐 URL da API:', `${API_BASE_URL}/calculate-route`);
+      const fullURL = `${API_BASE_URL}/test-route`;
+      console.log('🌐 URL completa:', fullURL);
+      
+      // Testa a conexão novamente antes de fazer a requisição
+      const ip = await getBackendIP();
+      const isBackendOnline = await testConnection(ip, 5000, 3000);
+      
+      if (!isBackendOnline) {
+        console.error('❌ Backend não está acessível');
+        throw new Error('Servidor não está acessível. Verifique se o backend está rodando.');
+      }
+      
+      console.log('✅ Backend está acessível, fazendo requisição...');
       
       const requestBody = {
         start_address: startAddress,
@@ -39,13 +59,20 @@ class RouteService {
       
       console.log('📤 Enviando request:', JSON.stringify(requestBody, null, 2));
       
-      const response = await fetch(`${API_BASE_URL}/calculate-route`, {
+      // Criar AbortController para timeout
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 segundos
+      
+      const response = await fetch(fullURL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(requestBody),
+        signal: controller.signal,
       });
+      
+      clearTimeout(timeoutId);
 
       console.log('📥 Response status:', response.status);
       console.log('📥 Response headers:', response.headers);
@@ -60,6 +87,17 @@ class RouteService {
       return data;
     } catch (error) {
       console.error('❌ Erro no RouteService:', error);
+      
+      // Tratamento específico para timeout
+      if (error.name === 'AbortError') {
+        throw new Error('Timeout: A requisição demorou muito para responder. Tente novamente.');
+      }
+      
+      // Tratamento para erro de rede
+      if (error.message.includes('fetch')) {
+        throw new Error('Erro de conectividade: Verifique sua conexão com a internet.');
+      }
+      
       throw error;
     }
   }

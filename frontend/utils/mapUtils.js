@@ -2,16 +2,31 @@
 // Utilitários para manipulação do mapa
 
 export const convertGeometryToCoordinates = (geometry) => {
-  if (!geometry || !geometry.coordinates) return [];
+  console.log('🗺️ Convertendo geometria:', geometry);
   
-  return geometry.coordinates.map(coord => ({
+  if (!geometry || !geometry.coordinates) {
+    console.log('❌ Geometria inválida ou sem coordenadas');
+    return [];
+  }
+  
+  const coordinates = geometry.coordinates.map(coord => ({
     latitude: coord[1],
     longitude: coord[0]
   }));
+  
+  console.log(`✅ ${coordinates.length} coordenadas convertidas`);
+  return coordinates;
 };
 
 export const calculateMapRegion = (startCoords, endCoords, padding = 1.5) => {
-  if (!startCoords || !endCoords) return null;
+  console.log('🗺️ Calculando região do mapa:');
+  console.log('  Start:', startCoords);
+  console.log('  End:', endCoords);
+  
+  if (!startCoords || !endCoords) {
+    console.log('❌ Coordenadas inválidas');
+    return null;
+  }
   
   const [startLat, startLng] = startCoords;
   const [endLat, endLng] = endCoords;
@@ -24,12 +39,15 @@ export const calculateMapRegion = (startCoords, endCoords, padding = 1.5) => {
   const latDelta = (maxLat - minLat) * padding;
   const lngDelta = (maxLng - minLng) * padding;
   
-  return {
+  const region = {
     latitude: (minLat + maxLat) / 2,
     longitude: (minLng + maxLng) / 2,
     latitudeDelta: Math.max(latDelta, 0.01),
     longitudeDelta: Math.max(lngDelta, 0.01),
   };
+  
+  console.log('✅ Região calculada:', region);
+  return region;
 };
 
 export const formatDistance = (meters) => {
