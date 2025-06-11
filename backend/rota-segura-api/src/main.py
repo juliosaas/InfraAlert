@@ -2,10 +2,10 @@ import os
 import sys
 from dotenv import load_dotenv
 
-# Carregar variáveis de ambiente
+# carregar variáveis de ambiente
 load_dotenv(os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env'))
 
-# DON'T CHANGE THIS !!!
+# nao usar o sys.path.append estava dando problema de importação
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 sys.path.insert(0, os.path.dirname(__file__))
 
@@ -17,18 +17,18 @@ from src.routes.routing import routing_bp
 app = Flask(__name__, static_folder=os.path.join(os.path.dirname(__file__), 'static'))
 app.config['SECRET_KEY'] = 'asdf#FGSgvasgf$5$WGT'
 
-# Configuração do banco de dados
+# configuração do bd
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///rota_segura.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Inicializar SQLAlchemy com a aplicação
+# inicializa SQLAlchemy com a aplicação
 db.init_app(app)
 
-# Criar tabelas se não existirem
+# criar  astabelas se não existirem
 with app.app_context():
     db.create_all()
 
-# Habilitar CORS para todas as rotas
+# habilitar CORS para todas as rotas
 CORS(app)
 
 app.register_blueprint(routing_bp, url_prefix='/api/routing')
@@ -40,7 +40,7 @@ def health_check():
     return {
         'status': 'OK',
         'message': 'InfraAlert API Python está funcionando',
-        'timestamp': time.strftime('%Y-%m-%d %H:%M:%S'),
+        'timestamp': time.strftime('%Y-%m-%d %H:%M:%S'), #horario do request 
         'service': 'rota-segura-api',
         'version': '1.0.0'
     }
@@ -52,7 +52,7 @@ def serve(path):
     if static_folder_path is None:
             return "Static folder not configured", 404
 
-    if path != "" and os.path.exists(os.path.join(static_folder_path, path)):
+    if path != "" and os.path.exists(os.path.join(static_folder_path, path)): # se o caminho nao existir, retorna 404
         return send_from_directory(static_folder_path, path)
     else:
         index_path = os.path.join(static_folder_path, 'index.html')
