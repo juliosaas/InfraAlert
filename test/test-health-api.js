@@ -1,6 +1,7 @@
-// Teste simples da API de health
+// teste simples de health
 const testHealthAPI = async () => {
-  const API_URL = 'http://192.168.100.9:5000/health';
+
+  const API_URL = 'http://localhost:5050/health';
   
   console.log('🚀 Testando endpoint de health...');
   console.log('📍 URL:', API_URL);
@@ -18,5 +19,4 @@ const testHealthAPI = async () => {
   }
 };
 
-// Executar teste
 testHealthAPI();

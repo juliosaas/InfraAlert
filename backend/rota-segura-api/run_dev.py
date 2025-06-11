@@ -24,7 +24,7 @@ def run_api():
         print("✅ Ambiente virtual criado!")
     
     print("🤖 Iniciando API Python - InfraAlert IA")
-    print("📍 API rodando em: http://localhost:5000")
+    print("📍 API rodando em: http://localhost:3000")
     print("=" * 40)
     
     # Executar no Windows

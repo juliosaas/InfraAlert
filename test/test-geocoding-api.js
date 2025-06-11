@@ -1,7 +1,8 @@
-// Teste simples do geocoding
 const testGeocodingAPI = async () => {
-  const API_URL = 'http://192.168.100.9:5000/api/routing/geocode';
+
+  const API_URL = 'http://localhost:5050/api/routing/geocode';
   
+
   const testData = {
     address: "Rua das Amoreiras, 123",
     city: "Campinas, SP"
@@ -12,7 +13,7 @@ const testGeocodingAPI = async () => {
   console.log('📤 Dados:', JSON.stringify(testData, null, 2));
   
   try {
-    const response = await fetch(API_URL, {
+    const response = await fetch(API_URL, { // fetch é para fazer requisições no HTTP
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -30,5 +31,4 @@ const testGeocodingAPI = async () => {
   }
 };
 
-// Executar teste
 testGeocodingAPI();

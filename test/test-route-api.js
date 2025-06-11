@@ -1,6 +1,7 @@
 // Arquivo de teste para a API de rotas
 const testRouteAPI = async () => {
-  const API_URL = 'http://192.168.100.9:5000/api/routing/calculate-route';
+
+  const API_URL = 'http://localhost:5050/api/routing/calculate-route';
   
   const testData = {
     start_address: "Rua das Amoreiras, 123, Campinas",

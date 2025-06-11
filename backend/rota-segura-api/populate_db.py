@@ -53,7 +53,8 @@ sample_data = [
     ("Avenida Atílio Martini", "19:30", "07:30", 6.0),
 ]
 
-def populate_rota_segura():
+def populate_rota_segura(): # funcao que faz a importação dos dados para a tabela RotaSegura
+    """Popula a tabela RotaSegura com dados de exemplo."""
     with app.app_context():
         print("Iniciando população de dados para RotaSegura...")
         

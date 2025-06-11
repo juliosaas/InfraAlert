@@ -3,7 +3,7 @@ import json
 
 def test_python_api():
     """Teste simples da API Python"""
-    url = "http://localhost:5000/api/routing/calculate-route"
+    url = "http://localhost:5050/api/routing/calculate-route"
     
     data = {
         "start_address": "Rua das Amoreiras, 123, Campinas",

@@ -1,7 +1,8 @@
-// Teste da API de rota simulada
+// rota simulada
 const testMockRouteAPI = async () => {
-  const API_URL = 'http://192.168.100.9:5000/api/routing/test-route';
-  
+
+  const API_URL = 'http://localhost:5050/api/routing/test-route';
+
   const testData = {
     start_address: "Rua das Amoreiras, 123, Campinas",
     end_address: "Rua Abolição, 456, Campinas",
