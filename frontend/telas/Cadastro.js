@@ -7,8 +7,9 @@ import {
   StyleSheet,
   Alert,
   ScrollView,
+  StatusBar,
 } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import { API_URL } from '../config';
@@ -60,10 +61,18 @@ export default function Cadastro() {
       setLoading(false); // desativa o carregamento
     }
   };
-
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.container}>
+        <StatusBar barStyle="light-content" backgroundColor="#19549C" />
+        
+        {/* Header com botão voltar */}
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Ionicons name="arrow-back" size={24} color="white" />
+          </TouchableOpacity>
+        </View>
+
         <Text style={styles.welcome}>Crie sua conta!</Text>
 
         <View style={styles.card}>
@@ -161,6 +170,12 @@ const styles = StyleSheet.create({
     backgroundColor: BLUE,
     paddingHorizontal: 24,
     paddingVertical: 40,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 10,
+    marginBottom: 20,
   },
   welcome: {
     color: 'white',

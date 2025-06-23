@@ -38,11 +38,31 @@ export default function App() {
   return (
     <UserContext.Provider value={{ user, setUser, networkConfigured }}>
       <NavigationContainer>        <Stack.Navigator initialRouteName="Loading">
-          <Stack.Screen name="Loading" component={Loading} />
-          <Stack.Screen name="Login" component={Login} />
-          <Stack.Screen name="Cadastro" component={Cadastro} />
-          <Stack.Screen name="Home" component={Home} />
-          <Stack.Screen name="Admin" component={AdminScreen} />
+          <Stack.Screen 
+            name="Loading" 
+            component={Loading}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen 
+            name="Login" 
+            component={Login}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen 
+            name="Cadastro" 
+            component={Cadastro}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen 
+            name="Home" 
+            component={Home}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen 
+            name="Admin" 
+            component={AdminScreen}
+            options={{ headerShown: false }}
+          />
           <Stack.Screen 
             name="Configuracoes" 
             component={Configuracoes}

@@ -265,9 +265,7 @@ export default function Home() {
             value={destino}
             onChangeText={setDestino}
             editable={!loading}
-          />
-
-          <TouchableOpacity
+          />          <TouchableOpacity
             style={[styles.calculateButton, loading && styles.calculateButtonDisabled]}
             onPress={handleCalculateRoute}
             disabled={loading}
@@ -276,7 +274,7 @@ export default function Home() {
               <ActivityIndicator color="white" />
             ) : (
               <Text style={styles.calculateButtonText}>
-                🗺️ Calcular Rota Segura
+                Buscar rota
               </Text>
             )}
           </TouchableOpacity>
@@ -327,13 +325,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     paddingVertical: 10,
     marginBottom: 10,
-  },
-  calculateButton: {
-    backgroundColor: '#0D4A8A',
-    borderRadius: 8,
+  },  calculateButton: {
+    backgroundColor: '#3b82f6',
+    borderRadius: 25,
     paddingVertical: 12,
+    paddingHorizontal: 24,
     alignItems: 'center',
+    justifyContent: 'center',
     marginVertical: 10,
+    flexDirection: 'row',
   },
   calculateButtonDisabled: {
     backgroundColor: '#666',

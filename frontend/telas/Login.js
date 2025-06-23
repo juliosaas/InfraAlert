@@ -6,8 +6,9 @@ import {
   TouchableOpacity,
   StyleSheet,
   Alert, // Import Alert for showing messages
+  StatusBar,
 } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios'; // Import axios
 import { UserContext } from '../App'; // Import UserContext
@@ -54,9 +55,17 @@ export default function Login() {
       setLoading(false);
     }
   };
-
   return (
     <View style={styles.container}>
+      <StatusBar barStyle="light-content" backgroundColor="#19549C" />
+      
+      {/* Header com botão voltar */}
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back" size={24} color="white" />
+        </TouchableOpacity>
+      </View>
+
       <Text style={styles.welcome}>Bem-vindo de volta!</Text>
 
       <View style={styles.card}>
@@ -130,6 +139,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingTop: 40,
     justifyContent: 'center', // Center content vertically
+  },
+  header: {
+    position: 'absolute',
+    top: 50,
+    left: 24,
+    zIndex: 10,
   },
   welcome: {
     color: 'white',

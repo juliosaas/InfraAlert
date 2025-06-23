@@ -31,9 +31,10 @@ const Configuracoes = ({ navigation }) => {
         <TouchableOpacity style={styles.button}>
           <Text style={styles.buttonText}>Conta e Segurança</Text>
           <Ionicons name="person-circle-outline" size={20} color="white" />
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.button}>
+        </TouchableOpacity>        <TouchableOpacity 
+          style={styles.button}
+          onPress={() => navigation.navigate('Premium')}
+        >
           <Text style={styles.buttonText}>Premium</Text>
           <FontAwesome5 name="crown" size={18} color="white" />
         </TouchableOpacity>
