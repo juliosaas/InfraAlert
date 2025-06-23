@@ -7,6 +7,7 @@ import Cadastro from './telas/Cadastro';
 import Home from './telas/Home';
 import AdminScreen from './telas/AdminScreen';
 import Configuracoes from './telas/Configuracoes';
+import Premium from './telas/Premium';
 import React, { createContext, useState, useEffect } from 'react';
 import { autoConfigureNetwork } from './scripts/autoConfigureNetwork';
 
@@ -36,8 +37,7 @@ export default function App() {
 
   return (
     <UserContext.Provider value={{ user, setUser, networkConfigured }}>
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Loading">
+      <NavigationContainer>        <Stack.Navigator initialRouteName="Loading">
           <Stack.Screen name="Loading" component={Loading} />
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Cadastro" component={Cadastro} />
@@ -46,6 +46,11 @@ export default function App() {
           <Stack.Screen 
             name="Configuracoes" 
             component={Configuracoes}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen 
+            name="Premium" 
+            component={Premium}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>

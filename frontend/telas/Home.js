@@ -209,7 +209,7 @@ export default function Home() {
         )}        {/* Botão Premium na esquerda - acima da barra interativa */}
         <TouchableOpacity
           style={styles.premiumButtonLeft}
-          onPress={() => Alert.alert('Premium', 'Funcionalidade Premium em desenvolvimento!')}
+          onPress={() => navigation.navigate('Premium')}
         >
           <FontAwesome5 name="crown" size={20} color="#fbbf24" />
         </TouchableOpacity>
