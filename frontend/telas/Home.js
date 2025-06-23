@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { View, Text, TextInput, StyleSheet, Animated, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import MapView, { Marker, Polyline } from 'react-native-maps';
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { UserContext } from '../App';
@@ -24,6 +24,7 @@ export default function Home() {
   const [partida, setPartida] = useState('');
   const [destino, setDestino] = useState('');
   const [mapRegion, setMapRegion] = useState({
+    // ponto inicial em Campinas, SP
     latitude: -22.9064,
     longitude: -47.0616,
     latitudeDelta: 0.01,
@@ -177,8 +178,7 @@ export default function Home() {
               strokeWidth={4}
               strokePattern={safetyInfo?.safety_analysis?.safety_level === 'PERIGOSA' ? [10, 5] : undefined}
             />
-          )}
-        </MapView>
+          )}        </MapView>
 
         {/* Botão admin flutuante */}
         {user && user.role === 'ADMIN' && (
@@ -206,9 +206,24 @@ export default function Home() {
               />
             )}
           </View>
-        )}
+        )}        {/* Botão Premium na esquerda - acima da barra interativa */}
+        <TouchableOpacity
+          style={styles.premiumButtonLeft}
+          onPress={() => Alert.alert('Premium', 'Funcionalidade Premium em desenvolvimento!')}
+        >
+          <FontAwesome5 name="crown" size={20} color="#fbbf24" />
+        </TouchableOpacity>
+
+        {/* Botão de Configurações no canto superior direito - acima da barra interativa */}
+        <TouchableOpacity
+          style={styles.configButtonRight}
+          onPress={() => navigation.navigate('Configuracoes')}
+        >
+          <FontAwesome name="cog" size={20} color="#2563eb" />
+        </TouchableOpacity>
 
         <Animated.View style={[styles.container, { opacity: fadeAnim }]}>
+
           <View style={styles.headerRow}>
             <TouchableOpacity
               onPress={() => setFavoritado(!favoritado)}
@@ -336,8 +351,7 @@ const styles = StyleSheet.create({
     color: 'white',
     textDecorationLine: 'underline',
     fontWeight: 'bold',
-  },
-  adminButton: {
+  },  adminButton: {
     position: 'absolute',
     top: 40,
     right: 20,
@@ -354,10 +368,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textTransform: 'uppercase',
   },
-
   routeInfo: {
     position: 'absolute',
-    top: 100,
+    top: 170,
     left: 20,
     right: 20,
     backgroundColor: 'rgba(255, 255, 255, 0.95)',
@@ -365,13 +378,62 @@ const styles = StyleSheet.create({
     padding: 10,
     zIndex: 5,
     elevation: 5,
-  },
-  routeInfoText: {
+  },  routeInfoText: {
     fontSize: 14,
     fontWeight: 'bold',
     color: '#333',
     textAlign: 'center',
     marginBottom: 5,
+  },  floatingButtonsContainer: {
+    position: 'absolute',
+    top: -60,
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    zIndex: 10,
+    elevation: 10,
+  },  premiumButtonLeft: {
+    position: 'absolute',
+    // altura do botao de configurações
+    top: 10,
+    left: 20,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    zIndex: 10,
+  },
+  configButtonRight: {
+    position: 'absolute',
+    // altura do botao de premium
+    top: 10,
+    right: 20,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    zIndex: 10,
   },
 });
-

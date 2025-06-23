@@ -26,10 +26,9 @@
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "Este app precisa de acesso à sua localização."
       }
-    },
-    "android": {
+    },    "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png", 
+        "foregroundImage": "./assets/img/InfraAlertLogo.png", 
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.yourusername.infraalert", 

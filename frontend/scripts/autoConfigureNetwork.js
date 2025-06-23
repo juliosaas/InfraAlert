@@ -18,7 +18,7 @@ export const autoConfigureNetwork = async () => {
     const ip = await getBackendIP();
 
     // Testa a conexão com o backend Python
-    const pythonBackendOnline = await testConnection(ip, 5000);
+    const pythonBackendOnline = await testConnection(ip, 5050);
     
     // Testa a conexão com o backend Node.js
     const nodeBackendOnline = await testConnection(ip, 3000);
@@ -36,9 +36,8 @@ export const autoConfigureNetwork = async () => {
     if (!pythonBackendOnline && !nodeBackendOnline) {
       Alert.alert(
         '⚠️ Problema de Conexão',
-        `Não foi possível conectar com nenhum backend.\n\n` +
-        `IP detectado: ${ip}\n` +
-        `Python API (5000): ${status.pythonAPI}\n` +
+        `Não foi possível conectar com nenhum backend.\n\n` +        `IP detectado: ${ip}\n` +
+        `Python API (5050): ${status.pythonAPI}\n` +
         `Node API (3000): ${status.nodeAPI}\n\n` +
         `Verifique se os serviços estão rodando.`,
         [
@@ -75,16 +74,16 @@ export const autoConfigureNetwork = async () => {
 export const showNetworkDebugInfo = async () => {
   try {
     const ip = await getBackendIP();
-    const pythonOnline = await testConnection(ip, 5000);
+    const pythonOnline = await testConnection(ip, 5050);
     const nodeOnline = await testConnection(ip, 3000);
 
     const debugInfo = 
       `🔍 Informações de Debug\n\n` +
       `IP Detectado: ${ip}\n` +
-      `Python API (5000): ${pythonOnline ? '✅' : '❌'}\n` +
+      `Python API (5050): ${pythonOnline ? '✅' : '❌'}\n` +
       `Node API (3000): ${nodeOnline ? '✅' : '❌'}\n\n` +
       `URLs:\n` +
-      `• Python: http://${ip}:5000\n` +
+      `• Python: http://${ip}:5050\n` +
       `• Node: http://${ip}:3000`;
 
     Alert.alert('🔧 Debug de Rede', debugInfo, [

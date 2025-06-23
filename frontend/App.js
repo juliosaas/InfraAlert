@@ -6,6 +6,7 @@ import Login from './telas/Login';
 import Cadastro from './telas/Cadastro';
 import Home from './telas/Home';
 import AdminScreen from './telas/AdminScreen';
+import Configuracoes from './telas/Configuracoes';
 import React, { createContext, useState, useEffect } from 'react';
 import { autoConfigureNetwork } from './scripts/autoConfigureNetwork';
 
@@ -24,8 +25,7 @@ export default function App() {
         console.log('🚀 Inicializando configuração de rede...');
         await autoConfigureNetwork();
         setNetworkConfigured(true);
-        console.log('✅ Rede configurada com sucesso');
-      } catch (error) {
+        console.log('✅ Rede configurada com sucesso');      } catch (error) {
         console.error('❌ Erro na configuração de rede:', error);
         setNetworkConfigured(true); // Continua mesmo com erro
       }
@@ -43,6 +43,11 @@ export default function App() {
           <Stack.Screen name="Cadastro" component={Cadastro} />
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="Admin" component={AdminScreen} />
+          <Stack.Screen 
+            name="Configuracoes" 
+            component={Configuracoes}
+            options={{ headerShown: false }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </UserContext.Provider>
